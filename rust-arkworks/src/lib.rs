@@ -44,25 +44,17 @@ pub mod sig {
     }
 
     fn compute_c<P: SWModelParameters>(
-        g: &GroupAffine<P>,
-        pk: &GroupAffine<P>,
-        h: &GroupAffine<P>,
         nul: &GroupAffine<P>,
         g_r: &GroupAffine<P>,
         z: &GroupAffine<P>,
     ) -> P::ScalarField {
-        // Compute c = sha512([g, pk, h, nul, g^r, z])
-        let g_bytes = affine_to_bytes::<P>(g);
-        let pk_bytes = affine_to_bytes::<P>(pk);
-        let h_bytes = affine_to_bytes::<P>(h);
+        // Compute c = sha512([nul, g^r, z])
+        // note: z = h^r
         let nul_bytes = affine_to_bytes::<P>(nul);
         let g_r_bytes = affine_to_bytes::<P>(g_r);
         let z_bytes = affine_to_bytes::<P>(z);
 
         let c_preimage_vec = [
-            g_bytes,
-            pk_bytes,
-            h_bytes,
             nul_bytes,
             g_r_bytes,
             z_bytes,
@@ -172,9 +164,6 @@ pub mod sig {
 
             // Compute c = sha512([g, pk, h, nul, g^r, z])
             let c_scalar: P::ScalarField = compute_c::<P>(
-                &g,
-                keypair.0,
-                &h,
                 &nul,
                 &g_r,
                 &z,
@@ -219,9 +208,6 @@ pub mod sig {
 
             // Compute c' = sha512([g, pk, h, nul, g^r, z])
             let c_scalar: P::ScalarField = compute_c::<P>(
-                &pp.g,
-                pk,
-                &h,
                 &sig.nul,
                 &sig.g_r,
                 &sig.z,

@@ -210,6 +210,6 @@ pub fn test_against_zk_nullifier_sig_c_and_s() {
         r
     ).unwrap();
 
-    assert_eq!(coord_to_hex(sig.c.into()), "00000000000000007da1ad3f63c6180beefd0d6a8e3c87620b54f1b1d2c8287d104da9e53b6b5524");
-    assert_eq!(coord_to_hex(sig.s.into()), "0000000000000000638330fea277e97ad407b32c9dc4d522454f5483abd903e6710a59d14f6fbdf2");
+    assert_eq!(coord_to_hex(sig.c.into()), "0000000000000000d898f5fa7e4af2d694cb948cfe3226aebd602852beb7b32f5e9225a10c2bc925");
+    assert_eq!(coord_to_hex(sig.s.into()), "00000000000000009231fa7cc28765f013def6b24310f09c8c25cb276b461d22162da027c90e348c");
 }
