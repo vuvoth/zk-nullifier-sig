@@ -50,13 +50,13 @@ describe("signals", () => {
     );
 
     expect(c).toEqual(
-      "c6a7fc2c926ddbaf20731a479fb6566f2daa5514baae5223fe3b32edbce83254"
+      "3dbfb717705010d4f44a70720c95e74b475bd3a783ab0b9e8a6b3b363434eb96"
     );
   });
 
   it("generates an s signal", () => {
     expect(s).toEqual(
-      "e69f027d84cb6fe5f761e333d12e975fb190d163e8ea132d7de0bd6079ba28ca"
+      "528e8fbb6452f82200797b1a73b2947a92524bd611085a920f1177cb8098136b"
     );
   });
 
@@ -83,10 +83,10 @@ describe("signals", () => {
       "6d017c6f63c59fa7a5b1e9a654e27d2869579f4d152131db270558fccd27b97c"
     );
     expect(c).toEqual(
-      "c6a7fc2c926ddbaf20731a479fb6566f2daa5514baae5223fe3b32edbce83254"
+      "3dbfb717705010d4f44a70720c95e74b475bd3a783ab0b9e8a6b3b363434eb96"
     );
     expect(s).toEqual(
-      "e69f027d84cb6fe5f761e333d12e975fb190d163e8ea132d7de0bd6079ba28ca"
+      "528e8fbb6452f82200797b1a73b2947a92524bd611085a920f1177cb8098136b"
     );
     expect(hashMPKPowR.y.toString(16)).toEqual(
       "586c43fb5c99818c564a8f80a88a65f83e3f44d3c6caf5a1a4e290b777ac56ed"

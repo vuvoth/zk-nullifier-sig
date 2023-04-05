@@ -23,24 +23,14 @@ export function computeHashMPk(
 }
 
 export function computeC(
-  publicKeyBytes: Uint8Array,
-  hashMPk: HashedPoint,
   nullifier: Point,
   gPowR: Point,
   hashMPkPowR: Point
 ) {
-  const gBytes = Point.BASE.toRawBytes(true);
-  const hashMPkBytes = new Point(
-    hexToBigInt(hashMPk.x.toString()),
-    hexToBigInt(hashMPk.y.toString())
-  ).toRawBytes(true);
   const nullifierBytes = nullifier.toRawBytes(true);
   const gPowRBytes = gPowR.toRawBytes(true);
   const hashMPkPowRBytes = hashMPkPowR.toRawBytes(true);
   const preimage = concatUint8Arrays([
-    gBytes,
-    publicKeyBytes,
-    hashMPkBytes,
     nullifierBytes,
     gPowRBytes,
     hashMPkPowRBytes,
@@ -94,7 +84,7 @@ export function computeAllInputs(
   const nullifier = computeNullifer(hashMPK, secretKeyBytes);
   const hashMPKPowR = computeHashMPkPowR(hashMPK, rBytes);
   const gPowR = computeGPowR(rBytes);
-  const c = computeC(publicKeyBytes, hashMPK, nullifier, gPowR, hashMPKPowR);
+  const c = computeC(nullifier, gPowR, hashMPKPowR);
   const s = computeS(rBytes, secretKeyBytes, c);
   return {
     plume: nullifier,

@@ -29,8 +29,6 @@ export const nullifier = computeNullifer(hashMPk, testSecretKey);
 export const hashMPkPowR = computeHashMPkPowR(hashMPk, testR);
 export const gPowR = computeGPowR(testR);
 export const c = computeC(
-  testPublicKey,
-  hashMPk,
   nullifier as unknown as Point,
   gPowR,
   hashMPkPowR
