@@ -104,7 +104,7 @@ template verify_nullifier(n, k, msg_length) {
     }
 
     // calculate c as sha256(g, pk, h, nullifier, g^r, h^r)
-    component c_sha256 = sha256_12_coordinates(n, k);
+    component c_sha256 = sha256_ec_points(n, k, 6);
     var g[2][100];
     g[0] = get_genx(n, k);
     g[1] = get_geny(n, k);
@@ -178,14 +178,14 @@ template a_div_b_pow_c(n, k) {
     }
 }
 
-template sha256_12_coordinates(n, k) {
-    signal input coordinates[12][k];
+template sha256_ec_points(n, k, p) {
+    signal input coordinates[2*p][k];
     signal input preimage_bit_length;
     signal output out[256];
 
     // compress coordinates
-    component compressors[6];
-    for (var i = 0; i < 6; i++) {
+    component compressors[p];
+    for (var i = 0; i < p; i++) {
         compressors[i] = compress_ec_point(n, k);
         for (var j = 0; j < k; j++) {
             compressors[i].uncompressed[0][j] <== coordinates[2*i][j];
@@ -194,22 +194,22 @@ template sha256_12_coordinates(n, k) {
     }
 
     // decompose coordinates inputs into binary
-    component binary[6*33];
-    for (var i = 0; i < 6; i++) { // for each compressor
+    component binary[p*33];
+    for (var i = 0; i < p; i++) { // for each compressor
         for (var j = 0; j < 33; j++) { // for each byte
             binary[33*i + j] = Num2Bits(8);
             binary[33*i + j].in <== compressors[i].compressed[j];
         }
     }
 
-    var message_bits = 6*33*8; // 6 compressed coordinates of 33 bytes
+    var message_bits = p*33*8; // p compressed coordinates of 33 bytes
     var total_bits = (message_bits \ 512) * 512;
     if (message_bits % 512 != 0) {
         total_bits += 512;
     }
 
     component sha256 = Sha256Hash(total_bits);
-    for (var i = 0; i < 6*33; i++) {
+    for (var i = 0; i < p*33; i++) {
         for (var j = 0; j < 8; j++) {
             sha256.msg[8*i + 7 - j] <== binary[i].out[j]; // Num2Bits is little endian, but compressed EC key form is big endian
         }
@@ -222,8 +222,8 @@ template sha256_12_coordinates(n, k) {
     // Message is padded with 1, a series of 0s, then the bit length of the message https://en.wikipedia.org/wiki/SHA-2#Pseudocode:~:text=append%20a%20single%20%271%27%20bit
     // TODO: move padding calculating into upstream repo to simplify API
     for (var i = 0; i < total_bits - 64; i++) {
-        if (i == 1584) {
-            sha256.padded_bits[1584] <== 1;
+        if (i == message_bits) {
+            sha256.padded_bits[i] <== 1;
         } else {
             sha256.padded_bits[i] <== sha256.msg[i];
         }

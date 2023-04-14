@@ -1,6 +1,6 @@
 import { CURVE, getPublicKey, Point } from "@noble/secp256k1";
 import {
-  computeC,
+  oldC,
   computeGPowR,
   computeHashMPk,
   computeHashMPkPowR,
@@ -28,7 +28,9 @@ export const hashMPk = computeHashMPk(testMessage, Buffer.from(testPublicKey));
 export const nullifier = computeNullifer(hashMPk, testSecretKey);
 export const hashMPkPowR = computeHashMPkPowR(hashMPk, testR);
 export const gPowR = computeGPowR(testR);
-export const c = computeC(
+export const c = oldC(
+  testPublicKey,
+  hashMPk,
   nullifier as unknown as Point,
   gPowR,
   hashMPkPowR

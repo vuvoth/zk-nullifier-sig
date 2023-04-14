@@ -2,7 +2,7 @@ import { join } from 'path';
 import { wasm as wasm_tester } from 'circom_tester'
 import { describe, expect, test } from '@jest/globals';
 import { hexToBigInt } from "../../javascript/src/utils/encoding";
-import { c, gPowR, hashMPk, hashMPkPowR, nullifier, s, testMessage, testPublicKey, testPublicKeyPoint, testSecretKey } from "../../javascript/test/test_consts"
+import { c, gPowR, hashMPk, hashMPkPowR, nullifier, s, testMessage, testPublicKey, testPublicKeyPoint } from "../../javascript/test/test_consts"
 import { Point } from "../../javascript/node_modules/@noble/secp256k1";
 import { generate_inputs_from_array } from "secp256k1_hash_to_curve_circom/ts/generate_inputs";
 import { bufToSha256PaddedBitArr } from "secp256k1_hash_to_curve_circom/ts/utils";
@@ -56,7 +56,7 @@ describe("Nullifier Circuit", () => {
       coordinates.push(cv[1]);
     })
 
-    const p = join(__dirname, '12_point_sha_256_test.circom')
+    const p = join(__dirname, 'ec_point_sha_256_test.circom')
     const circuit = await wasm_tester(p, {"json":true, "sym": true})
 
     const w = await circuit.calculateWitness({coordinates, preimage_bit_length: sha256_preimage_bit_length}, true)
