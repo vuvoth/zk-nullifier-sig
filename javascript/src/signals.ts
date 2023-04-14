@@ -40,34 +40,6 @@ export function computeC(
     .digest('hex')
 }
 
-export function oldC(
-  publicKeyBytes: Uint8Array,
-  hashMPk: HashedPoint,
-  nullifier: Point,
-  gPowR: Point,
-  hashMPkPowR: Point
-) {
-  const gBytes = Point.BASE.toRawBytes(true);
-  const hashMPkBytes = new Point(
-    hexToBigInt(hashMPk.x.toString()),
-    hexToBigInt(hashMPk.y.toString())
-  ).toRawBytes(true);
-  const nullifierBytes = nullifier.toRawBytes(true);
-  const gPowRBytes = gPowR.toRawBytes(true);
-  const hashMPkPowRBytes = hashMPkPowR.toRawBytes(true);
-  const preimage = concatUint8Arrays([
-    gBytes,
-    publicKeyBytes,
-    hashMPkBytes,
-    nullifierBytes,
-    gPowRBytes,
-    hashMPkPowRBytes,
-  ]);
-  return createHash("sha256")
-    .update(preimage)
-    .digest('hex')
-}
-
 export function computeNullifer(hashMPk: HashedPoint, secretKey: Uint8Array) {
   return multiplyPoint(hashMPk, secretKey);
 }

@@ -1,11 +1,11 @@
 import { CURVE, getPublicKey, Point } from "@noble/secp256k1";
 import {
-  oldC,
   computeGPowR,
   computeHashMPk,
   computeHashMPkPowR,
   computeNullifer,
   computeS,
+  computeC,
 } from "../src/signals";
 import {
   hexToUint8Array,
@@ -28,11 +28,9 @@ export const hashMPk = computeHashMPk(testMessage, Buffer.from(testPublicKey));
 export const nullifier = computeNullifer(hashMPk, testSecretKey);
 export const hashMPkPowR = computeHashMPkPowR(hashMPk, testR);
 export const gPowR = computeGPowR(testR);
-export const c = oldC(
-  testPublicKey,
-  hashMPk,
+export const c = computeC(
   nullifier as unknown as Point,
   gPowR,
   hashMPkPowR
-);
+)
 export const s = computeS(testR, testSecretKey, c);

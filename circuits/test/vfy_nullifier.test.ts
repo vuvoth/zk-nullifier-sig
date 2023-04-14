@@ -23,9 +23,6 @@ describe("Nullifier Circuit", () => {
   const hash_to_curve_inputs = utils.stringifyBigInts(generate_inputs_from_array(message_bytes.concat(public_key_bytes)));
 
   var sha_preimage_points: Point[] = [
-    Point.BASE,
-    testPublicKeyPoint,
-    hashMPkPoint,
     nullifier,
     gPowR,
     hashMPkPowR,
